@@ -1,6 +1,6 @@
 # Data Breach Chronology: Exploratory Data Analysis
 
-This project explores data breaches reported across the United States using the [Privacy Rights Clearinghouse Data Breach Chronology](https://privacyrights.org/databreach) dataset.
+This project explores data breaches reported across the United States using the [Privacy Rights Clearinghouse Data Breach Chronology](https://privacyrights.myshopify.com/pages/faq) dataset.
 
 ## 📊 Project Objective
 
