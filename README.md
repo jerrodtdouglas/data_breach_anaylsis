@@ -8,8 +8,8 @@ The goal is to provide an initial exploratory analysis that could support a pote
 
 ## 📁 Files Included
 
-- `final_project_completed.qmd`: The Quarto document containing code and narrative
-- `final_project_completed.html`: Rendered HTML output for easy review
+- `Exploratory Data Analysis of U.S. Data Breaches.qmd`: The Quarto document containing code and narrative
+- `Exploratory Data Analysis of U.S. Data Breaches.html`: Rendered HTML output for easy review
 - `README.md`: This file
 
 > ❗ **Note**: The dataset used for this project is not included due to licensing restrictions from the Privacy Rights Clearinghouse.
