@@ -1,0 +1,150 @@
+---
+title: "Exploratory Data Analysis of U.S. Data Breaches"
+author: "Jerrod Douglas"
+format: html
+editor: visual
+---
+
+# Introduction
+
+Data breaches have become one of the most persistent threats to public and private sector institutions in the digital age. The compromise of sensitive information not only erodes public trust but also poses significant financial, legal, and operational consequences. This analysis focuses on publicly reported data breaches in the U.S., drawing from the Privacy Rights Clearinghouse dataset, which compiles thousands of breach disclosures spanning nearly two decades. By exploring the patterns and characteristics of these incidents, the goal is to better understand which sectors are most affected, how breaches occur, and how impactful they tend to be. This initial data exploration simulates the type of analytical work that could assist policy organizations or public watchdog groups in shaping data privacy strategy and policy recommendations.
+
+## Purpose of the Analysis
+
+This analysis is intended to demonstrate how basic exploratory data science techniques can extract insights from public breach disclosures. If presented to a government agency, nonprofit, or think tank, this kind of work could serve as a prototype for a larger monitoring and reporting system. The focus here is not on predictive modeling but on descriptive analytics—identifying frequencies, distributions, and anomalies that might inform broader decisions, such as where to focus regulatory oversight or which sectors to prioritize for cybersecurity funding and training.
+
+## Brief background/context
+
+While cybersecurity threats have existed for decades, their complexity and scale have evolved rapidly. High-profile breaches at healthcare providers, educational institutions, and financial services companies have led to increased regulatory scrutiny and public concern. However, not all breaches make headlines. Many are reported quietly to state and federal agencies, creating a trove of data that can be analyzed for systemic patterns. This dataset captures those reports and is especially valuable because it includes breach types, impacted organization types, and the scale of each incident.
+
+## What you expect to find
+
+Given the increasing digital footprint of sensitive data, especially in healthcare and education, one might expect these sectors to experience more frequent breaches. Additionally, external cyberattacks (e.g., hacking or malware) are anticipated to be the leading breach type in terms of frequency and impact. Another hypothesis is that a relatively small number of breaches will account for the majority of individuals affected suggesting a long-tail distribution of breach sizes.Data Description
+
+## Source
+
+**Dataset name**: Data Breach Chronology\
+**Organization**: Privacy Rights Clearinghouse\
+**URL**: <https://privacyrights.org/databreach>
+
+## Structure of the Dataset
+
+**Subjects/Topics Covered**: U.S. breach events reported by agencies since 2005\
+**Unit of Observation**: Each row represents a unique reported breach event\
+**Number of Observations**: Over 73,000\
+**Number of Variables**: \~20 major fields
+
+## Key Variables
+
+-   **reported_date**: When the breach was reported to a government agency
+-   **breach_type**: Method used to breach data (e.g., HACK, CARD, INSD)
+-   **organization_type**: Category of organization affected (e.g., MED, EDU)
+-   **total_affected**: Estimated number of individuals impacted
+
+# Missing Data & Structural Issues
+
+As with many real-world administrative datasets, this one includes notable data quality challenges. The `total_affected` field, for instance, contains non-numeric entries such as text values or empty strings that require cleaning. Some entries may be self-reported estimates or rounded figures. Furthermore, while breach types are categorized, there may be inconsistency in how organizations classify similar incidents. The dataset is not hierarchical, but it includes `group_uuid` fields that can be used to cluster related incidents reported across multiple jurisdictions. This is useful but may not capture every link between reports.
+
+## Variable Descriptions & Context
+
+## breach_type
+
+**Description**: Categorical variable classifying how the breach occurred.\
+**Why it matters**: Indicates the nature of threats organizations face.\
+**Interpretation tips**: Values include HACK, INSD, PHYS, CARD, etc.
+
+## organization_type
+
+**Description**: Classification of the organization affected.\
+**Why it matters**: Helps identify which sectors are most vulnerable.\
+**Interpretation tips**: Use coded values (e.g., MED = healthcare, EDU = education).
+
+## total_affected
+
+**Description**: Numeric field showing how many people were affected.\
+**Why it matters**: Measures the scale of each breach.\
+**Interpretation tips**: Some large values may be outliers or estimates.
+
+# Descriptive Statistics
+
+## Data Cleaning and Transformation
+
+```{r}
+# Load the CSV
+data <- read.csv("Data_Breach_Chronology.csv", sep = "|", stringsAsFactors = FALSE)
+
+# Clean total_affected column
+data$total_affected <- as.numeric(gsub(",", "", data$total_affected))
+
+# Remove NAs for clean plotting
+clean_data <- subset(data, !is.na(total_affected))
+```
+
+## Summary Tables
+
+```{r}
+ summary(clean_data$total_affected)
+summary(as.factor(data$breach_type))
+summary(as.factor(data$organization_type))
+
+```
+
+## Frequency Tables
+
+```{r}
+table(data$breach_type)
+table(data$organization_type)
+```
+
+# Visualizations
+
+## Histogram of Total Affected
+
+```{r}
+options(scipen = 999)  # Turn off scientific notation globally
+
+hist(log10(clean_data$total_affected),
+     breaks = 50,
+     main = "Log-Transformed Distribution of Individuals Affected",
+     xlab = "Log10(Total Affected)") 
+
+
+
+```
+
+## Boxplot of Total Affected by Breach Type
+
+```{r}
+boxplot(total_affected ~ breach_type,
+        data = clean_data,
+        main = "Individuals Affected by Breach Type",
+        xlab = "Breach Type",
+        ylab = "Total Affected",
+        outline = FALSE)
+```
+
+# Initial Insights
+
+A preliminary review of the data reveals several key findings. First, hacking incidents (classified as `HACK`) are the dominant breach type both in terms of volume and average number of individuals affected. This confirms the notion that external cyber threats are the most pressing risk vector. Second, healthcare and educational institutions appear disproportionately represented, likely due to their combination of sensitive data and often limited cybersecurity resources.
+
+When visualized using raw counts, the data distribution is heavily skewed, with a small number of breaches impacting millions of people, while most affect far fewer. A log-transformed histogram of `total_affected` brings this into clearer focus, revealing that most breaches cluster between 10 and 10,000 affected individuals. The presence of numerous entries labeled `Unknown` for breach type or organization type also highlights gaps in disclosure quality or standardization.
+
+# Conclusion
+
+## Recap of Key Findings
+
+The analysis supports several critical takeaways for stakeholders. First, any future monitoring or mitigation efforts should prioritize large institutions in the healthcare and education sectors. Second, greater standardization in breach reporting, especially around affected counts and breach categories, would enhance the usefulness of this kind of data for real-time policy response. Lastly, the data clearly shows that while large breaches are rare, their impact is massive, underscoring the importance of both breach prevention and containment strategies.
+
+Going forward, one possible direction would be to conduct time series analysis to examine how breach frequency and size have changed over time. Another would be to incorporate natural language processing (NLP) to analyze the narrative sections of breach disclosures for common language, sentiment, and policy relevance.
+
+## Questions Raised
+
+How do breach sizes trend over time? Are sectors becoming more or less vulnerable?
+
+## Limitations of the Analysis
+
+This analysis doesn't include time-series modeling or geospatial breakdowns. Missing values and inconsistent reporting may bias some results.
+
+## Github
+
+<https://github.com/jerrodtdouglas/data_breach_anaylsis/>
