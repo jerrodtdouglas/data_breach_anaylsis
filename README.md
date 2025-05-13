@@ -9,8 +9,12 @@ The goal is to provide an initial exploratory analysis that could support a pote
 ## 📁 Files Included
 
 - `Exploratory Data Analysis of U.S. Data Breaches.qmd`: The Quarto document containing code and narrative
-- `Exploratory Data Analysis of U.S. Data Breaches.html`: Rendered HTML output for easy review
-- `README.md`: This file
+- `Exploratory Data Analysis of U.S. Data Breaches.html`: Rendered HTML output of the report
+- `Data_Breach_Chronology_README.pdf`: Official dataset documentation from Privacy Rights Clearinghouse, detailing data sources, structure, and field definitions
+- `README.md`: This file, containing project overview and instructions
+- `Data_Breach_Chronology_sample.csv`: Sample version of the dataset in CSV format (for structural reference only)
+- `Data_Breach_Chronology_sample.xlsx`: Sample version of the dataset in Excel format (for structural reference only)
+- `Data_Breach_Chronology_sample.db`: SQLite version of the sample dataset (for structural reference only)
 
 > ❗ **Note**: The dataset used for this project is not included due to licensing restrictions from the Privacy Rights Clearinghouse.
 
